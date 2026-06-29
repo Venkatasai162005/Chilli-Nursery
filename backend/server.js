@@ -14,7 +14,11 @@ const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || '*',
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:4173',
+      'https://chilli-nursery.vercel.app',
+    ],
     credentials: true,
   },
 });
@@ -30,10 +34,26 @@ io.on('connection', (socket) => {
 module.exports.io = io;
 
 // ── Middleware ──────────────────────────────────────────────────────────────
-app.use(cors({
-  origin: process.env.CLIENT_URL || '*',
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:4173',
+  'https://chilli-nursery.vercel.app',
+  // Allow any Vercel preview deployments too
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Render health checks)
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    // Also allow if CLIENT_URL env var matches (useful for custom domains)
+    if (process.env.CLIENT_URL && origin === process.env.CLIENT_URL) return callback(null, true);
+    callback(new Error(`CORS blocked: ${origin}`));
+  },
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 

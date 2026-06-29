@@ -11,6 +11,8 @@ backend/node_modules/
 .env
 frontend/.env
 backend/.env
+# .env.production is intentionally committed (no secrets, just API URL)
+!frontend/.env.production
 
 # ==========================
 # Build Files
