@@ -1,4 +1,4 @@
-# 🌶️ Bava's Chilli Nursery — Full-Stack Web App
+# 🌶️ Chilli Nursery — Full-Stack Web App
 
 A complete nursery management system with a **public farmer shop** and a **private admin dashboard**.
 
@@ -60,7 +60,7 @@ Open your browser at: **http://localhost:5173**
 - Add to cart → fill name & address → place order
 - Get an **Order ID** — use it to track status at `/track`
 
-### Admin (Bava)
+### Admin (me)
 - Go to `http://localhost:5173/admin/login`
 - Login with credentials from your `.env` file
 - **Dashboard** — see today's orders, revenue, low-stock alerts
