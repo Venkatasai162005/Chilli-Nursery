@@ -37,7 +37,7 @@ export default function AdminLogin() {
           <div className="form-group">
             <label>Email Address</label>
             <input
-              type="email" placeholder="bava@chilli.com"
+              type="email" placeholder="Enter admin email"
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
               required autoFocus
