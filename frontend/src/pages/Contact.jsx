@@ -2,8 +2,8 @@ import { useLang } from '../context/LanguageContext';
 
 export default function Contact() {
   const { t } = useLang();
-  const PHONE    = '+91 74163 37364';
-  const WHATSAPP = '917416337364';
+  const PHONE    = '+91 96385 27410';
+  const WHATSAPP = '919638527410';
   const ADDRESS  = 'Sri Devi Chilli Nursery, Martur Mandal, Prakasam District, Andhra Pradesh 523301';
   const MAP_LINK = 'https://maps.app.goo.gl/y3H6zETvHzMQADy28';
   // Embed using exact lat/lng from the shared link
