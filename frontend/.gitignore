@@ -12,9 +12,10 @@ dist
 dist-ssr
 *.local
 
-# Environment variables — only ignore local dev env
+# Environment variables — manage manually in Vercel/Render dashboards
 .env
 .env.local
+.env.production
 
 # Editor directories and files
 .vscode/*
