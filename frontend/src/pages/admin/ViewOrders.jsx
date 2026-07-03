@@ -14,6 +14,7 @@ export default function ViewOrders() {
   const [statusF, setStatusF] = useState('');
   const [selected, setSelected] = useState(null);
   const [updating, setUpdating] = useState(null);
+  const [deleting, setDeleting] = useState(null);
 
   const loadOrders = () => {
     const params = {};
@@ -36,6 +37,18 @@ export default function ViewOrders() {
       if (selected?._id === id) setSelected(data);
     } catch { toast.error('Update failed'); }
     finally { setUpdating(null); }
+  };
+
+  const deleteOrder = async (id, orderId) => {
+    if (!window.confirm(`Delete order ${orderId}? This cannot be undone.`)) return;
+    setDeleting(id);
+    try {
+      await api.delete(`/orders/${id}`);
+      toast.success('Order deleted');
+      setOrders((prev) => prev.filter((o) => o._id !== id));
+      if (selected?._id === id) setSelected(null);
+    } catch { toast.error('Delete failed'); }
+    finally { setDeleting(null); }
   };
 
   return (
@@ -93,16 +106,30 @@ export default function ViewOrders() {
                     <td onClick={(e) => e.stopPropagation()}>
                       <span className={`badge ${BADGE[o.status]}`}>{o.status}</span>
                     </td>
-                    <td onClick={(e) => e.stopPropagation()}>
+                    <td onClick={(e) => e.stopPropagation()} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                       {STATUS_NEXT[o.status] && (
                         <button
                           className="btn btn-outline btn-sm"
-                          disabled={updating === o._id}
+                          disabled={updating === o._id || deleting === o._id}
                           onClick={() => updateStatus(o._id, STATUS_NEXT[o.status])}
                         >
                           {updating === o._id ? '…' : `→ ${STATUS_NEXT[o.status]}`}
                         </button>
                       )}
+                      <button
+                        className="btn btn-sm"
+                        style={{
+                          background: 'rgba(239,68,68,0.15)',
+                          color: '#ef4444',
+                          border: '1px solid rgba(239,68,68,0.4)',
+                          borderRadius: 'var(--radius-sm, 6px)',
+                        }}
+                        disabled={deleting === o._id || updating === o._id}
+                        onClick={() => deleteOrder(o._id, o.orderId)}
+                        title="Delete order"
+                      >
+                        {deleting === o._id ? '…' : '🗑 Delete'}
+                      </button>
                     </td>
                   </tr>
                 ))}
